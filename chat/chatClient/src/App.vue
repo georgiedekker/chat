@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { reactive, ref } from 'vue';
+import { reactive, ref, nextTick } from 'vue';
 // import ChatInput from './components/ChatInput.vue';
 // import AppBar from './components/AppBar.vue'
 // import Chats from './components/Chats.vue'
@@ -58,21 +58,9 @@ let socket = io(process.env.VUE_APP_SOCKET_ENDPOINT, {
      console.log('messages received: '+mssages.result.length)
     //  let i = 0
     // const el = document.getElementById('indexs');
-      
-    //  for(i=0; i<mssages.result.length;i++){
-    //   if (el) {
-    //    console.log('message i: '+mssages.result[i].user.timeStamp)
-    //    document.getElementById('indexs').scrollIntoView({behavior:'smooth'})
-    //    messages.push(mssages.result[i])
-      //  document.getElementById('messages').lastChild.scrollIntoView({behavior:'smooth'})
-      //  document.getElementById('indexLast').scrollIntoView({behavior:'smooth'})
-    //    document.getElementById('chatMessage').focus()
-    //  }}
-     messages.push(...mssages.result)
-     
-    //  document.getElementById('indexs').focus()
-    //   document.getElementById('chatMessage').focus()
-    //   document.getElementById('indexs').scrollIntoView({behavior:'smooth'})
+      messages.push(...mssages.result)
+     nextTick(() =>{ document.getElementById('indexs').scrollIntoView({behavior:'smooth'})})
+      // document.getElementById('indexs').scrollIntoView({behavior:'smooth'})
    })
      socket.on('chat-message', received => {
       console.log('received chatInput: '+JSON.stringify(received))
