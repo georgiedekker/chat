@@ -56,19 +56,19 @@ let socket = io(process.env.VUE_APP_SOCKET_ENDPOINT, {
     })
     socket.on('messages', mssages =>{
      console.log('messages received: '+mssages.result.length)
-     let i = 0
-    const el = document.getElementById('indexs');
+    //  let i = 0
+    // const el = document.getElementById('indexs');
       
-     for(i=0; i<mssages.result.length;i++){
-      if (el) {
-       console.log('message i: '+mssages.result[i].user.timeStamp)
-       document.getElementById('indexs').scrollIntoView({behavior:'smooth'})
-       messages.push(mssages.result[i])
+    //  for(i=0; i<mssages.result.length;i++){
+    //   if (el) {
+    //    console.log('message i: '+mssages.result[i].user.timeStamp)
+    //    document.getElementById('indexs').scrollIntoView({behavior:'smooth'})
+    //    messages.push(mssages.result[i])
       //  document.getElementById('messages').lastChild.scrollIntoView({behavior:'smooth'})
       //  document.getElementById('indexLast').scrollIntoView({behavior:'smooth'})
-       document.getElementById('chatMessage').focus()
-     }}
-    //  messages.push(...mssages.result)
+    //    document.getElementById('chatMessage').focus()
+    //  }}
+     messages.push(...mssages.result)
      
     //  document.getElementById('indexs').focus()
     //   document.getElementById('chatMessage').focus()
