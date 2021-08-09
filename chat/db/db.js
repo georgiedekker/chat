@@ -52,7 +52,7 @@ app.post('/messages/', (req, res) => {
               return message, user, room
             })
 
-const url = 'mongodb+srv://chat:DLDA5wxUBYpu4vj@cluster0.dme9q.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+const url = process.env.DB_URL
 // Database Name
 const colName = room
 const client = new MongoClient(url)
