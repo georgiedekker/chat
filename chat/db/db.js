@@ -1,3 +1,4 @@
+require('dotenv').config()
 const { throws } = require('assert');
 const { v4: uuidv4 } = require('uuid');
 const cors = require('cors');
@@ -53,6 +54,7 @@ app.post('/messages/', (req, res) => {
             })
 
 const url = process.env.DB_URL
+//  || 'mongodb+srv://chat:DLDA5wxUBYpu4vj@cluster0.dme9q.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 // Database Name
 const colName = room
 const client = new MongoClient(url)
