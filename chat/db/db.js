@@ -27,12 +27,12 @@ app.get('/messages/', (req, res) => {
               // console.log('req: '+req+' res: '+res)
             console.log('received get on DB from server')
               
-              mainLoad()
-              // .then(console.log)
-              .then(console.log('success'))
-              .catch(console.error)
-              .finally(() => client.close())
-              // console.log(JSON.stringify(mis))
+              getMainLoad()
+              // if(mis===[]){
+              //   console.log('getMainLoad is empty')
+              //   mis = getMainLoad()
+              // }
+              console.log('mis: '+JSON.stringify(mis))
               // res.send(JSON.stringify(mes))
               res.send(JSON.stringify(mis))
               // res.send('<h1>Hey MondoDB</h1>');
@@ -83,18 +83,29 @@ async function mainLoad() {
               console.log('Connected successfully to server')
               const db = client.db(dbName)
               const collection = db.collection(colName)
+              let findResult = []
             
               // the following code examples can be pasted here...
               // const insertResult = await collection.insertOne({user:user, message:message})
               // console.log('Inserted documents =>', insertResult)
             
-              const findResult = await collection.find({}).limit(3).toArray()
+              findResult = await collection.find({}).limit(97).toArray()
+              
+              
+                // findResult = await collection.find({}).limit(250).toArray()
+              console.log('findResult?.length: '+findResult?.length)
               //             console.log('Found documents =>', findResult)
             mis = {result: findResult}
               return mis
             }
 
-
+async function getMainLoad(){
+  await mainLoad()
+  // .then(console.log)
+  .then(console.log('success'))
+  .catch(console.error)
+  .finally(() => client.close())
+}
 
 
 app.listen(2700, function() {

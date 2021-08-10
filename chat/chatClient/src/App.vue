@@ -63,7 +63,9 @@ socket.on('connection-succes', userFromServer =>{
     // userFromServer.name = userN!=''?userN:userFromServer.name
     // userList.indexOf(userFromServer.name) === -1 ?userList.push(userFromServer.name) :console.log(JSON.stringify(userFromServer)+' already in'+userList.length);
     // store.user.name= userFromServer});
-    
+    let nameUser = user.name
+    user = userFromServer
+    user.name = nameUser
     })
     socket.emit('new-user', user, room);
   // socket.emit('new-user', userName, 'start');
@@ -73,7 +75,8 @@ socket.on('connection-succes', userFromServer =>{
   //  });
     
     socket.on('messages', mssages =>{
-     console.log('messages received: '+mssages.result)
+      console.log('mssages: '+JSON.stringify(mssages))
+     console.log('messages received: '+mssages.result?.length)
 
       messages.push(...mssages.result)
      nextTick(() =>{ document.getElementById('indexs').scrollIntoView({behavior:'smooth'})})  //  return messages
@@ -94,7 +97,7 @@ socket.on('connection-succes', userFromServer =>{
      console.log(messages.length)
      nextTick(() =>{ document.getElementById('indexs').scrollIntoView({behavior:'smooth'})})
       
-     return messages
+     return messages, user
       })
   
 export default {
@@ -113,7 +116,7 @@ export default {
     return response.text();
   })
   .then(function(data) {
-    console.log(data);
+    console.log('room value'+data);
     room = data
     console.log(room)
     return room.value

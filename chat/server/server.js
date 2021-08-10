@@ -39,7 +39,7 @@ let name = { }
 let userName = ''
 let messages = []
 let defRoom = 'start'
-app.use(bodyParser.json())
+// app.use(bodyParser.json())
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true }))
 
@@ -74,28 +74,13 @@ io.on('connection', (socket) => {
               user.timeStamp = Date.now()
 
               getData('http://localhost:2700/messages/')
-                .then(data => {
-                  // console.log('obj keys data:'+Object.keys(data))
-                  // console.log(JSON.stringify(data))
-                  // console.log(data); // JSON data parsed by `data.json()` call
-                  // console.log(room)
-                  console.log(data.result)
-                  // messages = data.result
-                  // socket.emit('messages', data)
-                  return data
-                })
-                // .finally((data) => socket.emit('messages', data));
-                
-              //  console.log(user.id)
-                // socket.join(room)
-                // rooms[room] = { users: {} }
-                // rooms[room].users[socket.id] = name
-                // socket.to(room).emit('user-connected', user)
-                // socket.to(room).broadcast.emit('user-connected', name)
-                // socket.broadcast.emit('user-connected',name)
-                // if(room){console.log('rooms'+rooms[0].toString())}
-                // return rooms
-                // console.log('user object: '+Object.keys(user))
+                .then()
+                // console.log('received datatype from fetch db'+type(data)+' thedata: '+data);  
+                // messages = mssages
+                // socket.emit('messages', messages)
+              // return messages
+                // socket.emit('messages', data)
+                .finally();
                 return user
               })
               
@@ -145,19 +130,14 @@ async function postData(url = '', data = {}) {
 // Example GET method implementation:
 async function getData(url = '') {
   // Default options are marked with *
-  const response = await fetch(url)
-  .then(function(response) {
-    return response.text();
-  })
-  .then(function(data) {
-    // console.log(type(data));
+  // const response = await fetch(url)
+  await fetch(url)
+  .then(response => response.json())
+  .then(data => socket.emit('messages',data));
+
+  // })
     
-    messages = JSON.parse(data)
-    socket.emit('messages', messages)
-    // console.log(messages.result)
-    return messages
-  });
-  // console.log(r)
+
 // console.log(response.statusText)
 // console.log(response.body)
 
@@ -166,7 +146,7 @@ async function getData(url = '') {
 // if(response.body.json()){
   // response = response.body.json()
 // }
-return messages
+// return messages
   // return response.body.json(); // parses JSON response into native JavaScript objects
 }
 
