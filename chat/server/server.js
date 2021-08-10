@@ -60,10 +60,13 @@ io.on('connection', (socket) => {
   // socket.join(defRoom)
   let token = socket.handshake.auth.token;
   if(token){console.log('handshake succes '+token.toString())}
-  let user = newUser(socket.handshake.name)
+  // console.log(socket.handshake.auth.name)
+  let user = newUser(socket.handshake.auth.name)
+  // console.log('userFromServer: '+JSON.stringify(user))
   // socket.to(defRoom).emit('connection-success', user)
   socket.emit('connection-succes', user)
-  io.emit('connection-succes', user)
+  // io.emit('connection-succes', user)
+  
   //user joins a room
   socket.on('new-user', (userName, room) => {
                 console.log('new-user event on server: '+userName)
@@ -75,8 +78,8 @@ io.on('connection', (socket) => {
                   // console.log('obj keys data:'+Object.keys(data))
                   // console.log(JSON.stringify(data))
                   // console.log(data); // JSON data parsed by `data.json()` call
-                  // console.log(data)
-                  // console.log(data.result)
+                  // console.log(room)
+                  console.log(data.result)
                   // messages = data.result
                   // socket.emit('messages', data)
                   return data

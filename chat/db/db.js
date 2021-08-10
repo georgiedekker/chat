@@ -3,6 +3,7 @@ const { throws } = require('assert');
 const { v4: uuidv4 } = require('uuid');
 const cors = require('cors');
 const express = require('express');
+const moment = require('moment');
 const app = express();
 const bodyParser= require('body-parser');
 const { MongoClient } = require('mongodb');
@@ -23,8 +24,8 @@ app.use(cors({
             }));
 
 app.get('/messages/', (req, res) => {
-              console.log('req: '+req+' res: '+res)
-
+              // console.log('req: '+req+' res: '+res)
+            console.log('received get on DB from server')
               
               mainLoad()
               // .then(console.log)
@@ -41,8 +42,6 @@ app.post('/messages/', (req, res) => {
               room  = req.body.message.room
               message = req.body.message
               user = req.body.user
-              console.log('received post: '+req.body.message+' with res: '+'res')
-              console.log('received post: '+req.body.user.name+' with res: '+'res')
               console.log('received message from : '+user.name+' message: '+message)
               main()
               .then(console.log)
@@ -70,7 +69,7 @@ async function main() {
 
   // the following code examples can be pasted here...
   const insertResult = await collection.insertOne({user:user, message:message})
-  console.log('Inserted documents =>', insertResult)
+  console.log('Inserted documents =>', insertResult+' '+moment(user.timeStamp).format('HH:mm:ss'))
 
 //   const findResult = await collection.find({}).toArray()
 //               console.log('Found documents =>', findResult)
@@ -89,7 +88,7 @@ async function mainLoad() {
               // const insertResult = await collection.insertOne({user:user, message:message})
               // console.log('Inserted documents =>', insertResult)
             
-              const findResult = await collection.find({}).toArray()
+              const findResult = await collection.find({}).limit(3).toArray()
               //             console.log('Found documents =>', findResult)
             mis = {result: findResult}
               return mis
