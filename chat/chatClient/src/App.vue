@@ -1,9 +1,9 @@
 <template>
        <div id="side-bar" class="side-bar">
             <ul class="usersUl" id="usersL">
-                <li class="usersLi" v-for="(user, index) in userList" :key="index">
-                   <p> {{ user.name }} <br/>
-                  <sub>{{ user.status}} at {{moment(user.timeStamp).format('HH:mm:ss')}} </sub></p>
+                <li class="usersLi" v-for="(userL, index) in userList" :key="index"> 
+                   <a href="#"> {{ userL.name }}  </a> <span v-if="(userL.status=='online')" class="dotgreen"></span><span v-if="(userL.status=='offline')" class="dotred"></span><span v-if="(userL.status=='typing')" class="dotyellow"></span><br/>
+                  <p><sub>{{ userL.status}} at {{moment(userL.timeStamp).format('HH:mm:ss')}} </sub></p>
               </li>
               </ul>
 
@@ -48,7 +48,7 @@ let userN = '';
 let room = ref('');
 let messages = reactive([]);
 let userList = reactive([]);
-let user = reactive({name:'someName'+Math.floor(Math.random()*10000)})
+let user = reactive({name: 'someName'+ Math.floor(Math.random()*10000)})
 let userName = user.name
 let socket = io(process.env.VUE_APP_SOCKET_ENDPOINT, {
                 auth: {
@@ -61,7 +61,8 @@ let socket = io(process.env.VUE_APP_SOCKET_ENDPOINT, {
 socket.on('connection-succes', userFromServer =>{
     console.log('user from server: '+JSON.stringify(userFromServer))
     // userFromServer.name = userN!=''?userN:userFromServer.name
-    // userList.indexOf(userFromServer.name) === -1 ?userList.push(userFromServer.name) :console.log(JSON.stringify(userFromServer)+' already in'+userList.length);
+    userList.indexOf(userFromServer.name) === -1 ?userList.push(userFromServer) :console.log(JSON.stringify(userFromServer)+' already in'+userList.length);
+    
     // store.user.name= userFromServer});
     let nameUser = user.name
     user = userFromServer
@@ -75,10 +76,17 @@ socket.on('connection-succes', userFromServer =>{
   //  });
     
     socket.on('messages', mssages =>{
-      console.log('mssages: '+JSON.stringify(mssages))
-     console.log('messages received: '+mssages.result?.length)
-
-      messages.push(...mssages.result)
+      // console.log('mssages: '+JSON.stringify(mssages))
+     console.log('messages received: '+JSON.stringify(mssages.result[0].user.status))
+      mssages.result.forEach(function(element) {
+        userList.indexOf(element.user.name) === -1 ?userList.push(element.user) :console.log(JSON.stringify(userList)+' already in'+userList.length);
+          console.log('userList: '+userList.length+' and content of list: '+JSON.stringify(userList))
+         if(element.user.name==userName){
+      element.user.name='you'
+    }
+    messages.push(element)
+      });
+      // messages.push(...mssages.result)
      nextTick(() =>{ document.getElementById('indexs').scrollIntoView({behavior:'smooth'})})  //  return messages
    })
      socket.on('chat-message', received => {
@@ -153,9 +161,9 @@ export default {
 </script>
 <style>
       body { margin: 0rem; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-     .side-bar {width: 30%; height: 100%; position: fixed; background: rgba(155, 0, 255, 0.55); padding: 0rem 1rem; box-sizing: border-box; }
-      .side-bar > ul.usersUl > { list-style-type: space-counter; margin: 0rem; padding: 0.25rem; }
-      .side-bar > ul.usersUl > li.usersLi { background: #e333ef; }
+     .side-bar {width: 30%; height: 100%; float:left; position: fixed; background: rgba(0, 101, 153, 0.75); margin-bottom: 0rem; overflow:hidden; overflow-y: scroll }
+      .side-bar > ul.usersUl > { list-style-type: space-counter; margin: 0rem; padding: 0.25rem;box-sizing: border-box; }
+      .side-bar > ul.usersUl > li.usersLi { background: rgba(0, 101, 153, 0.5) }
       .main {width: 70%; float:right;}
       form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
       form > label { border: 0; padding: 0 2rem;}
@@ -166,5 +174,48 @@ export default {
       ul { list-style-type: none; margin: 0; padding: 0; }
       ul > li { padding: 0.25rem 1rem; }
       ul > li:nth-child(odd) { background: #efefef; }
+      a {text-decoration: none;}
+      a:hover {text-decoration: none;}
+      a {text-decoration: none; position: relative;}
+      a:after {
+        border-radius: 1em;
+        border-top: .1em solid #2F56B0;
+        content: "";
+        position: absolute;
+          right: 100%;
+          bottom: .14em;
+          left: 0;
+        transition: right .4s cubic-bezier(0,.5,0,1);
+      }
+      a:hover:after {        right: 0;      }
+      dot {
+        height: 25px;
+        width: 25px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+      }
+      .dotgreen{
+        height: 15px;
+        width: 15px;
+        border-radius: 50%;
+        display: inline-block;
+        background-color: green;
+      }
+      .dotred{
+        height: 15px;
+        width: 15px;
+        border-radius: 50%;
+        display: inline-block;
+        background-color: red;
+      }
+      .dotyellow{
+        height: 15px;
+        width: 15px;
+        border-radius: 50%;
+        display: inline-block;
+        background-color: yellow;
+      }
+     
       /* ul > li:nth-last-child(1):focus { outline:none;} */
     </style>

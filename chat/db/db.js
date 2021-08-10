@@ -32,7 +32,7 @@ app.get('/messages/', (req, res) => {
               //   console.log('getMainLoad is empty')
               //   mis = getMainLoad()
               // }
-              console.log('mis: '+JSON.stringify(mis))
+              // console.log('mis: '+JSON.stringify(mis))
               // res.send(JSON.stringify(mes))
               res.send(JSON.stringify(mis))
               // res.send('<h1>Hey MondoDB</h1>');
@@ -88,7 +88,7 @@ async function mainLoad() {
               // the following code examples can be pasted here...
               // const insertResult = await collection.insertOne({user:user, message:message})
               // console.log('Inserted documents =>', insertResult)
-            
+              
               findResult = await collection.find({}).limit(97).toArray()
               
               

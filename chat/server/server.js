@@ -74,13 +74,13 @@ io.on('connection', (socket) => {
               user.timeStamp = Date.now()
 
               getData('http://localhost:2700/messages/')
-                .then()
+                // .then()
                 // console.log('received datatype from fetch db'+type(data)+' thedata: '+data);  
                 // messages = mssages
                 // socket.emit('messages', messages)
               // return messages
                 // socket.emit('messages', data)
-                .finally();
+                // .finally();
                 return user
               })
               
