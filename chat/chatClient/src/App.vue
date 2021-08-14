@@ -4,6 +4,7 @@
                 <li class="usersLi" v-for="(userL, index) in userList" :key="index"> 
                    <a href="#"> {{ userL.name }}  </a> <span v-if="(userL.status=='online')" class="dotgreen"></span><span v-if="(userL.status=='offline')" class="dotred"></span><span v-if="(userL.status=='typing')" class="dotyellow"></span><br/>
                   <p><sub>{{ userL.status}} at {{moment(userL.timeStamp).format('HH:mm:ss')}} </sub></p>
+                  <hr>
               </li>
               </ul>
 
@@ -161,9 +162,9 @@ export default {
 </script>
 <style>
       body { margin: 0rem; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-     .side-bar {width: 30%; height: 100%; float:left; position: fixed; background: rgba(0, 101, 153, 0.75); margin-bottom: 0rem; overflow:hidden; overflow-y: scroll }
+     .side-bar {width: 30%; height: 100%; float:left; position: fixed; background: rgba(255, 255, 255, 0.75); margin-bottom: 0rem; overflow:hidden; overflow-y: scroll }
       .side-bar > ul.usersUl > { list-style-type: space-counter; margin: 0rem; padding: 0.25rem;box-sizing: border-box; }
-      .side-bar > ul.usersUl > li.usersLi { background: rgba(0, 101, 153, 0.5) }
+      .side-bar > ul.usersUl > li.usersLi { background: rgba(255, 255, 255, 0.5) }
       .main {width: 70%; float:right;}
       form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
       form > label { border: 0; padding: 0 2rem;}
@@ -216,6 +217,8 @@ export default {
         display: inline-block;
         background-color: yellow;
       }
-     
+     hr { display: block; height: 1px;
+    border: 0; border-top: 1px solid #ccc;
+    margin: 1em 0; padding: 0; }
       /* ul > li:nth-last-child(1):focus { outline:none;} */
     </style>
